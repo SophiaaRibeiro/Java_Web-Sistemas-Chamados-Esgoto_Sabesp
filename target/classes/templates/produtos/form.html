@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Produto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/estilo.css}" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/produtos}">Sistema de Produtos</a>
+    </div>
+</nav>
+
+<main class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 th:text="${titulo}">Cadastrar Produto</h3>
+        </div>
+
+        <div class="card-body">
+            <form th:action="@{/produtos/salvar}" th:object="${produto}" method="post">
+
+                <input type="hidden" th:field="*{id}">
+
+                <div class="mb-3">
+                    <label class="form-label">Nome do Produto</label>
+                    <input type="text" class="form-control" th:field="*{nome}">
+                    <div class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Categoria</label>
+                    <input type="text" class="form-control" th:field="*{categoria}">
+                    <div class="text-danger" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Preço</label>
+                    <input type="number" step="0.01" class="form-control" th:field="*{preco}">
+                    <div class="text-danger" th:if="${#fields.hasErrors('preco')}" th:errors="*{preco}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Quantidade</label>
+                    <input type="number" class="form-control" th:field="*{quantidade}">
+                    <div class="text-danger" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Descrição</label>
+                    <textarea class="form-control" rows="3" th:field="*{descricao}"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success">Salvar</button>
+                <a th:href="@{/produtos}" class="btn btn-secondary">Voltar</a>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

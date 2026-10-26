@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Produtos Cadastrados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/estilo.css}" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/produtos}">Sistema de Produtos</a>
+    </div>
+</nav>
+
+<main class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Produtos Cadastrados</h2>
+        <a th:href="@{/produtos/novo}" class="btn btn-success">Novo Produto</a>
+    </div>
+
+    <form class="row mb-3" method="get" th:action="@{/produtos}">
+        <div class="col-md-10">
+            <input type="text" name="busca" class="form-control"
+                   placeholder="Buscar por nome do produto"
+                   th:value="${busca}">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100" type="submit">Buscar</button>
+        </div>
+    </form>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Preço</th>
+                    <th>Quantidade</th>
+                    <th>Total em Estoque</th>
+                    <th>Situação</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="produto : ${produtos}">
+                    <td th:text="${produto.id}"></td>
+                    <td th:text="${produto.nome}"></td>
+                    <td th:text="${produto.categoria}"></td>
+                    <td th:text="${#numbers.formatDecimal(produto.preco, 1, 2)}"></td>
+                    <td th:text="${produto.quantidade}"></td>
+                    <td th:text="${#numbers.formatDecimal(produto.calcularValorTotalEstoque(), 1, 2)}"></td>
+                    <td>
+                        <span class="badge bg-danger" th:if="${produto.estoqueBaixo()}">Estoque baixo</span>
+                        <span class="badge bg-success" th:unless="${produto.estoqueBaixo()}">OK</span>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" th:href="@{/produtos/editar/{id}(id=${produto.id})}">
+                            Editar
+                        </a>
+                        <a class="btn btn-danger btn-sm"
+                           th:href="@{/produtos/excluir/{id}(id=${produto.id})}"
+                           onclick="return confirm('Deseja realmente excluir este produto?')">
+                            Excluir
+                        </a>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(produtos)}">
+                    <td colspan="8" class="text-center">Nenhum produto cadastrado.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="/h2-console" target="_blank">Abrir console do banco H2</a>
+    </div>
+
+</main>
+
+</body>
+</html>
