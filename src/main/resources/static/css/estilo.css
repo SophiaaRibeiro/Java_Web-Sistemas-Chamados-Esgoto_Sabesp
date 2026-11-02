@@ -1,11 +1,364 @@
-body {
-    background-color: #f5f7fa;
+
+/* ==============================
+   CONFIGURAÇÕES GERAIS
+================================ */
+
+:root {
+    --azul-principal: #174A78;
+    --azul-escuro: #123654;
+    --azul-claro: #EAF2F8;
+    --fundo: #F5F7FA;
+    --texto: #263445;
+    --texto-secundario: #718096;
+    --borda: #E3E8EF;
+    --branco: #FFFFFF;
 }
 
-.card {
-    border-radius: 12px;
+body {
+    background-color: var(--fundo);
+    color: var(--texto);
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+}
+
+/* ==============================
+   NAVEGAÇÃO
+================================ */
+
+.navbar-sistema {
+    background-color: var(--azul-escuro);
+    padding: 15px 0;
 }
 
 .navbar-brand {
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.marca-icone {
+    background-color: var(--branco);
+    color: var(--azul-escuro);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+/* ==============================
+   CABEÇALHOS
+================================ */
+
+.cabecalho-pagina {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.texto-superior {
+    color: var(--azul-principal);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 7px 0;
+}
+
+.cabecalho-pagina p,
+.texto-descricao {
+    color: var(--texto-secundario);
+    margin: 0;
+    font-size: 14px;
+}
+
+/* ==============================
+   BOTÕES
+================================ */
+
+.btn-principal {
+    background-color: var(--azul-principal);
+    color: var(--branco);
+    border: none;
+    padding: 11px 18px;
+    border-radius: 7px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-principal:hover {
+    background-color: var(--azul-escuro);
+    color: var(--branco);
+}
+
+.btn-secundario {
+    background-color: var(--azul-claro);
+    color: var(--azul-principal);
+    border: 1px solid #D5E3EF;
+    font-weight: 600;
+}
+
+.btn-secundario:hover {
+    background-color: #DCEAF5;
+    color: var(--azul-escuro);
+}
+
+.btn-cancelar {
+    background-color: #F0F2F5;
+    color: #536273;
+    padding: 10px 18px;
+}
+
+.btn-cancelar:hover {
+    background-color: #E1E5EA;
+    color: var(--texto);
+}
+
+/* ==============================
+   INDICADORES
+================================ */
+
+.indicador {
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 140px;
+    box-shadow: 0 2px 8px rgba(30, 50, 70, 0.03);
+}
+
+.indicador-titulo {
+    font-size: 13px;
+    color: var(--texto-secundario);
+}
+
+.indicador strong {
+    display: block;
+    font-size: 29px;
+    color: var(--azul-principal);
+    margin: 8px 0 3px;
+}
+
+.indicador-legenda {
+    color: var(--texto-secundario);
+    font-size: 12px;
+}
+
+/* ==============================
+   PAINEL E TABELA
+================================ */
+
+.painel-tabela {
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(30, 50, 70, 0.03);
+}
+
+.painel-cabecalho {
+    padding: 22px 20px 16px;
+}
+
+.painel-cabecalho h2,
+.formulario-cabecalho h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.painel-cabecalho p,
+.formulario-cabecalho p {
+    font-size: 13px;
+    color: var(--texto-secundario);
+    margin: 0;
+}
+
+.tabela-chamados {
+    margin-bottom: 0;
+}
+
+.tabela-chamados thead th {
+    background-color: #F7F9FC;
+    color: #65758A;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    padding: 15px;
+    border-bottom: 1px solid var(--borda);
+}
+
+.tabela-chamados tbody td {
+    padding: 16px 15px;
+    font-size: 13px;
+    border-bottom: 1px solid #EEF1F5;
+}
+
+.tabela-chamados tbody tr:hover {
+    background-color: #FAFCFE;
+}
+
+.acoes {
+    display: flex;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.mensagem-vazia {
+    color: var(--texto-secundario);
+    padding: 35px !important;
+}
+
+/* ==============================
+   STATUS
+================================ */
+
+.status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-aberto {
+    background-color: #FFF3D6;
+    color: #956300;
+}
+
+.status-analise {
+    background-color: #E8F1FF;
+    color: #245A9A;
+}
+
+.status-atendimento {
+    background-color: #F0E9FF;
+    color: #6843A5;
+}
+
+.status-resolvido {
+    background-color: #E1F5E9;
+    color: #247344;
+}
+
+.status-outro {
+    background-color: #EEF1F5;
+    color: #536273;
+}
+
+/* ==============================
+   FORMULÁRIO
+================================ */
+
+.link-voltar {
+    color: var(--azul-principal);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.link-voltar:hover {
+    text-decoration: underline;
+}
+
+.formulario-card {
+    max-width: 850px;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(30, 50, 70, 0.03);
+}
+
+.formulario-cabecalho {
+    padding: 22px 24px;
+    background-color: #FAFBFD;
+    border-bottom: 1px solid var(--borda);
+}
+
+.formulario-card .card-body {
+    padding: 25px;
+}
+
+.form-label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.form-control,
+.form-select {
+    border: 1px solid #DCE2E9;
+    border-radius: 7px;
+    padding: 11px 12px;
+    font-size: 13px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--azul-principal);
+    box-shadow: 0 0 0 3px rgba(23, 74, 120, 0.10);
+}
+
+.form-control::placeholder {
+    color: #A0AAB7;
+}
+
+.form-text {
+    font-size: 12px;
+    color: var(--texto-secundario);
+}
+
+.alerta-informativo {
+    background-color: var(--azul-claro);
+    color: var(--azul-principal);
+    border-radius: 7px;
+    padding: 13px;
+    font-size: 12px;
+}
+
+/* ==============================
+   RODAPÉ
+================================ */
+
+.rodape {
+    text-align: center;
+    color: #98A2B0;
+    font-size: 11px;
+    margin-top: 35px;
+    padding: 15px;
+}
+
+/* ==============================
+   RESPONSIVIDADE
+================================ */
+
+@media (max-width: 768px) {
+
+    .cabecalho-pagina {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cabecalho-pagina .btn {
+        width: 100%;
+    }
+
+    .navbar-text {
+        display: none;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .formulario-card .card-body {
+        padding: 18px;
+    }
 }
