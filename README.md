@@ -37,16 +37,4 @@ O sistema conta com controle de acesso baseado em perfis (Spring Security):
 * **Banco de Dados:** SQLite (com persistência local via Hibernate)
 * **Gerenciamento de Dependências:** Maven
 
----
 
-## 🚀 Como Executar o Projeto
-
-### Pré-requisitos
-* Java JDK 17 ou superior instalado.
-* Uma IDE de sua preferência (IntelliJ IDEA recomendada).
-* Maven configurado.
-
-### Passo a passo
-1. Clone o repositório para a sua máquina:
-   ```bash
-   git clone [https://github.com/SEU-USUARIO/nome-do-repositorio.git](https://github.com/SEU-USUARIO/nome-do-repositorio.git)
