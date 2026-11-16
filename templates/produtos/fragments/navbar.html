@@ -1,0 +1,139 @@
+<nav th:fragment="navbar"
+     xmlns:th="http://www.thymeleaf.org"
+     class="navbar navbar-expand-lg custom-navbar">
+
+    <div class="container">
+
+        <!-- Logo / Marca -->
+        <a class="navbar-brand brand-logo" th:href="@{/usuario/home}">
+            <div class="brand-icon">PSS</div>
+            <span>Portal Saneamento Santos</span>
+        </a>
+
+        <!-- Botão Mobile -->
+        <button class="navbar-toggler custom-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#menuNavbar"
+                aria-controls="menuNavbar"
+                aria-expanded="false"
+                aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Links e Menu -->
+        <div class="collapse navbar-collapse" id="menuNavbar">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+
+                <!-- Link opcional para Home ou Chamados se necessário -->
+                <li class="nav-item">
+                    <a class="nav-link custom-nav-link" th:href="@{/usuario/home}">Início</a>
+                </li>
+
+                <!-- Botão de Sair -->
+                <li class="nav-item ms-lg-2">
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button type="submit" class="btn-logout">
+                            Sair
+                        </button>
+                    </form>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- Estilos exclusivos da Navbar para manter o padrão visual -->
+    <style>
+        .custom-navbar {
+            background-color: var(--branco, #FFFFFF);
+            border-bottom: 1px solid var(--borda, #DCE7DF);
+            box-shadow: 0 4px 20px rgba(20, 83, 45, 0.04);
+            padding: 12px 0;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--verde-escuro, #14532D) !important;
+            font-weight: 750;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--verde-claro, #E8F5EC);
+            color: var(--verde-escuro, #14532D);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .custom-nav-link {
+            color: var(--texto, #26352C) !important;
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.2s ease;
+            padding: 8px 12px !important;
+        }
+
+        .custom-nav-link:hover {
+            color: var(--verde-principal, #198754) !important;
+        }
+
+        /* Botão de Sair estilizado com o padrão de botões */
+        .btn-logout {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            padding: 0 16px;
+            border: 1px solid var(--borda, #DCE7DF);
+            border-radius: 8px;
+            background: transparent;
+            color: #DC3545;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 650;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-logout:hover {
+            background: #FEE2E2;
+            border-color: #FECACA;
+            color: #991B1B;
+            transform: translateY(-1px);
+        }
+
+        .custom-toggler {
+            border-color: var(--borda, #DCE7DF);
+            padding: 6px 10px;
+        }
+
+        .custom-toggler:focus {
+            box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.12);
+        }
+
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                padding-top: 15px;
+                border-top: 1px solid var(--borda, #DCE7DF);
+                margin-top: 12px;
+            }
+            .btn-logout {
+                width: 100%;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

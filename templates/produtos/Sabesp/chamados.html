@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Sabesp | Gestão de Chamados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/estilo.css}" rel="stylesheet">
+    <style>
+        :root {
+            --verde-escuro: #14532D;
+            --verde-principal: #198754;
+            --verde-hover: #157347;
+            --verde-claro: #E8F5EC;
+            --fundo: #F2F7F3;
+            --branco: #FFFFFF;
+            --texto: #26352C;
+            --texto-secundario: #718078;
+            --borda: #DCE7DF;
+        }
+        body {
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: radial-gradient(circle at top left, #DCEFE1, transparent 38%),
+            radial-gradient(circle at bottom right, #E3F1E7, transparent 38%),
+            var(--fundo);
+            color: var(--texto);
+        }
+        .main-container { max-width: 1100px; margin: 0 auto; padding: 35px 18px; }
+        .stat-card {
+            background: var(--branco);
+            border: 1px solid var(--borda);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 6px 20px rgba(20, 83, 45, 0.05);
+        }
+        .stat-label { font-size: 12px; font-weight: 700; color: var(--texto-secundario); text-transform: uppercase; }
+        .stat-value { font-size: 28px; font-weight: 800; color: var(--verde-escuro); margin-top: 4px; }
+        .content-card {
+            background: var(--branco);
+            border: 1px solid var(--borda);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(20, 83, 45, 0.06);
+        }
+        .custom-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .custom-table th {
+            background: var(--verde-claro); color: var(--verde-escuro);
+            font-weight: 650; padding: 12px 14px; border-bottom: 1px solid var(--borda);
+        }
+        .custom-table td { padding: 14px; border-bottom: 1px solid var(--borda); vertical-align: middle; }
+        .badge-status { padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+
+        .badge-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .status-aberto { background: #FEF3C7; color: #92400E; }       /* Amarelo */
+        .status-analise { background: #F3E8FF; color: #6B21A8; }      /* Roxo */
+        .status-atendimento { background: #E0F2FE; color: #0369A1; }  /* Azul */
+        .status-resolvido { background: #DCFCE7; color: #166534; }    /* Verde */
+    </style>
+</head>
+<body>
+
+<div th:replace="~{produtos/fragments/navbar :: navbar}"></div>
+
+<main class="main-container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <div>
+            <span class="text-uppercase fw-bold small" style="color: var(--verde-principal);">ÁREA TÉCNICA • SABESP</span>
+            <h2 class="fw-bold mb-1" style="color: var(--verde-escuro);">Gestão de Ocorrências de Esgoto</h2>
+            <p class="text-muted small mb-0">Visualize os chamados registrados, atualize o status e registre pareceres técnicos.</p>
+        </div>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-label">Total Registrado</div>
+                <div class="stat-value" th:text="${totalChamados}">0</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-label">Abertos</div>
+                <div class="stat-value text-warning" th:text="${chamadosAbertos}">0</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-label">Em Análise / Atendimento</div>
+                <div class="stat-value text-primary" th:text="${chamadosEmAndamento}">0</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-label">Concluídos</div>
+                <div class="stat-value text-success" th:text="${chamadosResolvidos}">0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros e Tabela -->
+    <div class="content-card">
+        <form id="formFiltro" th:action="@{/sabesp/chamados}" method="get" class="row g-2 mb-4">
+            <div class="col-md-6">
+                <input type="text" id="campoBusca" name="busca" class="form-control" th:value="${busca}"
+                       placeholder="Filtrar por endereço, bairro ou tipo de problema...">
+            </div>
+            <div class="col-md-4">
+                <select name="status" class="form-select" onchange="this.form.submit()">
+                    <option value="">Todos os status</option>
+                    <option value="ABERTO" th:selected="${statusSelecionado == 'ABERTO'}">ABERTO</option>
+                    <option value="EM ANÁLISE" th:selected="${statusSelecionado == 'EM ANÁLISE'}">EM ANÁLISE</option>
+                    <option value="EM ATENDIMENTO" th:selected="${statusSelecionado == 'EM ATENDIMENTO'}">EM ATENDIMENTO</option>
+                    <option value="RESOLVIDO" th:selected="${statusSelecionado == 'RESOLVIDO'}">RESOLVIDO</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-grid">
+                <a th:href="@{/sabesp/chamados}" class="btn btn-outline-secondary">Limpar</a>
+            </div>
+        </form>
+
+        <script>
+            // Filtra automaticamente 500ms após parar de digitar na busca
+            let timerBusca;
+            const campoBusca = document.getElementById('campoBusca');
+            campoBusca.addEventListener('input', function () {
+                clearTimeout(timerBusca);
+                timerBusca = setTimeout(() => {
+                    document.getElementById('formFiltro').submit();
+                }, 500);
+            });
+        </script>
+
+        <div class="table-responsive">
+            <table class="custom-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo de Problema</th>
+                    <th>Endereço / Bairro</th>
+                    <th>Solicitante</th>
+                    <th>Data Abertura</th>
+                    <th>Status</th>
+                    <th class="text-end">Ação</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="chamado : ${chamados}">
+                    <td class="fw-bold" th:text="${'#' + chamado.id}">#1</td>
+                    <td th:text="${chamado.tipoProblema}">Vazamento</td>
+                    <td>
+                        <div th:text="${chamado.endereco}">Rua X, 10</div>
+                        <small class="text-muted" th:if="${chamado.comentarioSabesp != null and !#strings.isEmpty(chamado.comentarioSabesp)}">
+                            ✓ Com resposta técnica
+                        </small>
+                    </td>
+                    <td th:text="${chamado.usuario != null ? chamado.usuario.nome : 'Cidadão'}">Nome</td>
+                    <td th:text="${#temporals.format(chamado.dataAbertura, 'dd/MM/yyyy HH:mm')}">16/11/2026</td>
+                    <td>
+                        <span class="badge-status"
+                              th:classappend="${chamado.status == 'RESOLVIDO' ? 'status-resolvido' :
+                      (chamado.status == 'EM ATENDIMENTO' ? 'status-atendimento' :
+                      (chamado.status == 'EM ANÁLISE' ? 'status-analise' : 'status-aberto'))}"
+                              th:text="${chamado.status}">ABERTO</span>
+                    </td>
+                    <td class="text-end">
+                        <a th:href="@{/sabesp/chamados/{id}(id=${chamado.id})}" class="btn btn-sm btn-success fw-semibold">
+                            Analisar / Responder
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(chamados)}">
+                    <td colspan="7" class="text-center text-muted py-4">Nenhum chamado encontrado.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
