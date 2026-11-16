@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Área do Usuário | Gestão de Chamados</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link th:href="@{/css/estilo.css}" rel="stylesheet">
+</head>
+<style>
+  :root {
+    --verde-escuro: #14532D;
+    --verde-principal: #198754;
+    --verde-hover: #157347;
+    --verde-claro: #E8F5EC;
+    --fundo: #F2F7F3;
+    --branco: #FFFFFF;
+    --texto: #26352C;
+    --texto-secundario: #718078;
+    --borda: #DCE7DF;
+    --erro: #DC3545;
+  }
+
+  /* RESET */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    min-height: 100vh;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background:
+            radial-gradient(circle at top left, #DCEFE1, transparent 38%),
+            radial-gradient(circle at bottom right, #E3F1E7, transparent 38%),
+            var(--fundo);
+    color: var(--texto);
+  }
+
+  /* LAYOUT DA HOME */
+  .dashboard-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 18px;
+  }
+
+  .welcome-header {
+    margin-bottom: 30px;
+  }
+
+  .welcome-header h2 {
+    color: var(--verde-escuro);
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .welcome-header p {
+    color: var(--texto-secundario);
+    font-size: 14px;
+  }
+
+  /* CARDS */
+  .custom-card {
+    background: var(--branco);
+    border: 1px solid rgba(220, 231, 223, 0.9);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(20, 83, 45, 0.06);
+    margin-bottom: 25px;
+    overflow: hidden;
+  }
+
+  .custom-card-body {
+    padding: 30px;
+  }
+
+  .action-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .action-card h4 {
+    color: var(--verde-escuro);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .action-card p {
+    color: var(--texto-secundario);
+    font-size: 13px;
+    margin-bottom: 0;
+  }
+
+  /* BOTÃO PRINCIPAL */
+  .auth-button-custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 46px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 9px;
+    background: var(--verde-principal);
+    color: var(--branco);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .auth-button-custom:hover {
+    background: var(--verde-hover);
+    color: var(--branco);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 13px rgba(25, 135, 84, 0.18);
+  }
+
+  /* TABELA DE CHAMADOS */
+  .table-title {
+    color: var(--verde-escuro);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  .custom-table th {
+    background: var(--verde-claro);
+    color: var(--verde-escuro);
+    font-weight: 650;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--borda);
+  }
+
+  .custom-table td {
+    padding: 14px 16px;
+    color: var(--texto);
+    border-bottom: 1px solid var(--borda);
+    vertical-align: middle;
+  }
+
+  .custom-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* BADGES DE STATUS */
+  .badge-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .status-aberto {
+    background: #FEF3C7;
+    color: #92400E;
+  }
+
+  .status-andamento {
+    background: #E0F2FE;
+    color: #0369A1;
+  }
+
+  .status-resolvido {
+    background: #DCFCE7;
+    color: #166534;
+  }
+
+  /* ESTADO VAZIO */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--texto-secundario);
+  }
+
+  .badge-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .status-aberto { background: #FEF3C7; color: #92400E; }       /* Amarelo */
+  .status-analise { background: #F3E8FF; color: #6B21A8; }      /* Roxo */
+  .status-atendimento { background: #E0F2FE; color: #0369A1; }  /* Azul */
+  .status-resolvido { background: #DCFCE7; color: #166534; }    /* Verde */
+
+  /* RESPONSIVIDADE */
+  @media (max-width: 768px) {
+    .action-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .auth-button-custom {
+      width: 100%;
+    }
+  }
+</style>
+<body>
+
+<!-- Navbar existente do sistema -->
+<div th:replace="~{produtos/fragments/navbar :: navbar}"></div>
+
+<main class="dashboard-container">
+
+  <!-- Cabeçalho de Boas-Vindas -->
+  <div class="welcome-header">
+    <h2>Área do Usuário</h2>
+    <p>Acompanhe suas ocorrências registradas e abra novos chamados de forma rápida.</p>
+  </div>
+
+  <!-- Card de Ação Rápida -->
+  <div class="custom-card">
+    <div class="custom-card-body action-card">
+      <div>
+        <h4>Registrar nova ocorrência</h4>
+        <p>Identificou algum problema de esgoto ou infraestrutura? Abra um chamado para nossa equipe.</p>
+      </div>
+      <a th:href="@{/usuario/chamados/novo}" class="auth-button-custom">
+        + Abrir Chamado
+      </a>
+    </div>
+  </div>
+
+  <!-- Seção de Chamados Realizados -->
+  <div class="custom-card">
+    <div class="custom-card-body">
+      <h3 class="table-title">Meus Chamados Recentes</h3>
+      <div th:if="${sucesso}" class="alert alert-success" role="alert" th:text="${sucesso}"></div>
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título / Descrição</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th class="text-end">Ações</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="chamado : ${chamados}">
+            <td th:text="${'#' + chamado.id}">#01</td>
+            <td>
+              <strong th:text="${chamado.tipoProblema}">Vazamento de esgoto</strong>
+              <div class="small text-muted" th:text="${chamado.endereco}">Rua das Flores, 123</div>
+              <div th:if="${chamado.comentarioSabesp != null and !#strings.isEmpty(chamado.comentarioSabesp)}"
+                   class="small text-success mt-1">
+                <strong>Resposta Sabesp:</strong> <span th:text="${chamado.comentarioSabesp}"></span>
+              </div>
+            </td>
+            <td th:text="${#temporals.format(chamado.dataAbertura, 'dd/MM/yyyy HH:mm')}">10/10/2026</td>
+            <td>
+      <span class="badge-status"
+            th:classappend="${chamado.status == 'RESOLVIDO' ? 'status-resolvido' : (chamado.status == 'ABERTO' ? 'status-aberto' : 'status-andamento')}"
+            th:text="${chamado.status}">ABERTO</span>
+            </td>
+            <td class="text-end">
+              <a th:href="@{/usuario/chamados/{id}(id=${chamado.id})}" class="btn btn-sm btn-outline-success">Ver Detalhes</a>
+            </td>
+          </tr>
+
+          <tr th:if="${#lists.isEmpty(chamados)}">
+            <td colspan="5" class="empty-state">
+              Você ainda não registrou nenhum chamado. Clique em <strong>"+ Abrir Chamado"</strong> acima para começar.
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | Gestão de Chamados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/estilo.css}" rel="stylesheet">
+</head>
+<style>
+    /* ========================================
+      Portal Saneamento Santos - LOGIN E CADASTRO
+    ======================================== */
+
+    :root {
+        --verde-escuro: #14532D;
+        --verde-principal: #198754;
+        --verde-hover: #157347;
+        --verde-claro: #E8F5EC;
+        --fundo: #F2F7F3;
+        --branco: #FFFFFF;
+        --texto: #26352C;
+        --texto-secundario: #718078;
+        --borda: #DCE7DF;
+        --erro: #DC3545;
+    }
+
+    /* RESET */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        min-height: 100vh;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background:
+                radial-gradient(circle at top left, #DCEFE1, transparent 38%),
+                radial-gradient(circle at bottom right, #E3F1E7, transparent 38%),
+                var(--fundo);
+        color: var(--texto);
+    }
+
+    /* LAYOUT PRINCIPAL */
+    .auth-container {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 18px;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 440px;
+        background: var(--branco);
+        padding: 38px;
+        border: 1px solid rgba(220, 231, 223, 0.9);
+        border-radius: 18px;
+        box-shadow: 0 12px 40px rgba(20, 83, 45, 0.09);
+    }
+
+    /* IDENTIDADE VISUAL */
+    .auth-logo {
+        width: 54px;
+        height: 54px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 18px;
+        background: var(--verde-claro);
+        color: var(--verde-escuro);
+        border-radius: 15px;
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    .auth-brand {
+        text-align: center;
+        color: var(--verde-escuro);
+        font-size: 21px;
+        font-weight: 750;
+        margin-bottom: 7px;
+    }
+
+    .auth-subtitle {
+        text-align: center;
+        color: var(--texto-secundario);
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+
+    /* TÍTULOS */
+    .auth-title {
+        color: var(--verde-escuro);
+        font-size: 25px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    .auth-description {
+        color: var(--texto-secundario);
+        font-size: 14px;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    /* FORMULÁRIO */
+    .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 17px;
+    }
+
+    .auth-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .auth-group label {
+        color: var(--texto);
+        font-size: 13px;
+        font-weight: 650;
+    }
+
+    .auth-group input,
+    .auth-group select {
+        width: 100%;
+        height: 48px;
+        padding: 0 14px;
+        border: 1px solid var(--borda);
+        border-radius: 9px;
+        background: #FCFDFC;
+        color: var(--texto);
+        font-family: inherit;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.2s ease;
+    }
+
+    .auth-group input::placeholder {
+        color: #A0ADA3;
+    }
+
+    .auth-group input:focus,
+    .auth-group select:focus {
+        border-color: var(--verde-principal);
+        background: var(--branco);
+        box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.12);
+    }
+
+    /* BOTÃO PRINCIPAL */
+    .auth-button {
+        width: 100%;
+        height: 49px;
+        margin-top: 5px;
+        border: none;
+        border-radius: 9px;
+        background: var(--verde-principal);
+        color: var(--branco);
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .auth-button:hover {
+        background: var(--verde-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 5px 13px rgba(25, 135, 84, 0.18);
+    }
+
+    /* LINKS */
+    .auth-link {
+        color: var(--verde-principal);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 650;
+        transition: 0.2s;
+    }
+
+    .auth-link:hover {
+        color: var(--verde-escuro);
+        text-decoration: underline;
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 24px;
+        color: var(--texto-secundario);
+        font-size: 13px;
+    }
+
+    /* MENSAGENS */
+    .auth-alert {
+        padding: 12px 14px;
+        margin-bottom: 18px;
+        border-radius: 9px;
+        font-size: 13px;
+    }
+
+    .auth-alert-success {
+        background: #DCFCE7;
+        color: #166534;
+        border: 1px solid #BBF7D0;
+    }
+
+    .auth-alert-error {
+        background: #FEE2E2;
+        color: #991B1B;
+        border: 1px solid #FECACA;
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 480px) {
+        .auth-card {
+            padding: 28px 22px;
+            border-radius: 14px;
+        }
+        .auth-title {
+            font-size: 22px;
+        }
+        .auth-brand {
+            font-size: 19px;
+        }
+    }
+</style>
+<body>
+
+<main class="auth-container">
+    <div class="auth-card">
+
+        <!-- Logo / Marca -->
+        <div class="auth-logo">PSS</div>
+        <h1 class="auth-brand">Portal Saneamento Santos</h1>
+        <p class="auth-subtitle">Sistema de Gestão de Chamados e Ocorrências</p>
+
+        <!-- Alertas -->
+        <div th:if="${param.erro}" class="auth-alert auth-alert-error">
+            E-mail ou senha inválidos.
+        </div>
+
+        <div th:if="${param.cadastroSucesso}" class="auth-alert auth-alert-success">
+            Cadastro realizado com sucesso! Faça seu login.
+        </div>
+
+        <div th:if="${param.logout}" class="auth-alert auth-alert-success">
+            Você saiu do sistema.
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold small text-secondary d-block text-center mb-2">Selecione o perfil de acesso:</label>
+            <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="tipoAcesso" id="acessoCidadao" autocomplete="off" checked>
+                <label class="btn btn-outline-success btn-sm" for="acessoCidadao">Cidadão</label>
+
+                <input type="radio" class="btn-check" name="tipoAcesso" id="acessoSabesp" autocomplete="off">
+                <label class="btn btn-outline-success btn-sm" for="acessoSabesp">Sabesp</label>
+
+                <input type="radio" class="btn-check" name="tipoAcesso" id="acessoPrefeitura" autocomplete="off">
+                <label class="btn btn-outline-success btn-sm" for="acessoPrefeitura">Prefeitura</label>
+            </div>
+        </div>
+        <!-- Formulário -->
+        <form th:action="@{/login}" method="post" class="auth-form">
+
+            <div class="auth-group">
+                <label>E-mail</label>
+                <input type="email" name="username" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="auth-group">
+                <label>Senha</label>
+                <input type="password" name="password" placeholder="Sua senha" required>
+            </div>
+
+            <button type="submit" class="auth-button">
+                Entrar
+            </button>
+        </form>
+
+        <p class="auth-footer">
+            Ainda não tem conta?
+            <a th:href="@{/cadastro}" class="auth-link">Cadastre-se</a>
+        </p>
+
+    </div>
+</main>
+<script>
+    const inputEmail = document.querySelector('input[name="username"]');
+
+    document.getElementById('acessoCidadao').addEventListener('change', () => {
+        inputEmail.value = '';
+        inputEmail.placeholder = 'seu@email.com';
+    });
+
+    document.getElementById('acessoSabesp').addEventListener('change', () => {
+        inputEmail.value = 'sabesp@santos.sp.gov.br';
+    });
+
+    document.getElementById('acessoPrefeitura').addEventListener('change', () => {
+        inputEmail.value = 'prefeitura@santos.sp.gov.br';
+    });
+</script>
+</body>
+
+</html>
